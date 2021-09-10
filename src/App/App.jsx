@@ -7,22 +7,23 @@ const  App = () => {
   const [errorMes, setErrorMes] = useState('');
 
   const addContactHandler = (value) =>{
-    if(!contacts.some(contact => contact.email === value.email)){
       if(value.name || value.email){
         if(value.name){
           if(value.email){
             setContacts([
               ...contacts,
-              value
+              {
+                id: contacts.length + 1,
+                ...value,
+              },
             ]) 
           } else setErrorMes('contact email is necessary');
         } else setErrorMes('contact name is necessary');
       } else setErrorMes('contact name and contact email in necessary');
-      } else setErrorMes('this contact is exist');
   }
 
-  const removeContactHandler = (email) =>{
-    const filteredContacts = contacts.filter(contact => contact.email !== email);
+  const removeContactHandler = (id) =>{
+    const filteredContacts = contacts.filter(contact => contact.id !== id);
     setContacts(filteredContacts);
   }
 
