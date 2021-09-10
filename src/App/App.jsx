@@ -12,7 +12,7 @@ const  App = () => {
     ])
   }
   return (
-    <div>
+    <div className={'w-4/5 mx-auto'}>
       <AddContactForm onSubmit={addContactHandler} />
     </div>
   );

@@ -1,29 +1,46 @@
 import { useState } from "react";
+import AddContactInput from "../Common/AddContactInput";
 
 const AddContactForm = ({ onSubmit }) => {
-    const [formValue, setFormValue] = useState({
-        name: '',
-        email: '',
-    })
-    
-    const changeHandler = (e) =>{
-        setFormValue({
-            ...formValue,
-            [e.taget.name]: e.target.value,
-        })
-    }
+  const [formValue, setFormValue] = useState({
+    name: "",
+    email: "",
+  });
+
+  const changeHandler = (e) => {
+    setFormValue({
+      ...formValue,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
-    <form method="post" onSubmit={()=> onSubmit(formValue)} >
-      <fieldset>
-        <label htmlFor="name">name</label>
-        <input type="text" placeholder="name" id="name" name="name" onChange={changeHandler} />
-      </fieldset>
-      <fieldset>
-        <label htmlFor="email">name</label>
-        <input type="email" placeholder="email" id="email" name="email" onChange={changeHandler} />
-      </fieldset>
-      <button>add</button>
+    <form
+      className={`w-full`}
+      method="post"
+      onSubmit={() => onSubmit(formValue)}
+    >
+      <h1 className={`text-3xl mb-6 font-bolder`}>Add Contact</h1>
+      <AddContactInput
+      type="text"
+      placeholder="Name"
+      id="name"
+      lbl="name"
+      name="name"
+      onChange={changeHandler} 
+      />
+      <AddContactInput
+      type="email"
+      placeholder="Email"
+      id="email"
+      lbl="email"
+      name="email"
+      onChange={changeHandler} />
+      <button
+        className={`text-white font-bold block py-2 px-5 rounded-md bg-blue-500`}
+      >
+        Add
+      </button>
     </form>
   );
 };
