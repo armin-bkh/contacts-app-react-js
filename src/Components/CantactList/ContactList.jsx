@@ -3,7 +3,7 @@ import Contact from "./Contact/Contact";
 const ContactList = ({ onDelete, contacts }) => {
     return (
         <section className={`py-5`}>
-            <ul>
+            <ul className={`border-t border-gray-300`}>
                 {
                     contacts ? 
                     contacts.map(contact => (
