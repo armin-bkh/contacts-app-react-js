@@ -63,7 +63,7 @@ const App = ({ history }) => {
     >
       <Switch>
         <Route
-          path="/edit-contact"
+          path="/edit-contact-:ID"
           render={(props) => (
             <EditContactForm onSubmit={editContactHandler} {...props} />
           )}

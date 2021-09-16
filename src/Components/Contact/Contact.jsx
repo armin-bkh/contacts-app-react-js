@@ -49,7 +49,7 @@ const ContactMember = ({ location, history, match, onDelete }) => {
                 {contactDetail.email}
               </h3>
             </div>
-            <Link to={{pathname: "/edit-contact", state: { contactDetail }}}
+            <Link to={`/edit-contact-${contactDetail.id}`}
             className={`text-yellow-400 text-2xl px-4 py-2 border border-yellow-400 transition rounded-md hover:text-gray-800 hover:bg-yellow-400`}
             ><BiPencil /></Link>
           </div>

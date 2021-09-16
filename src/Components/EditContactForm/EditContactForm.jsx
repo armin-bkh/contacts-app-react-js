@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import getContact from "../../Services/getContact";
 import AddContactInput from "../Common/AddContactInput";
 
-const EditContactForm = ({ location, history, onSubmit }) => {
+const EditContactForm = ({match, history, onSubmit }) => {
   const [contact, setContact] = useState({
       name: "",
       email: "",
@@ -10,10 +11,17 @@ const EditContactForm = ({ location, history, onSubmit }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (location.state) {
-      const { contactDetail } = location.state;
-      setContact(contactDetail);
-    } else history.push("/")
+    if (match.params.ID) {
+      const fetchContact = async () =>{
+        try {
+            const { data } = await getContact(match.params.ID)
+            setContact(data);
+        } catch (error) {
+        history.push("/")
+        }
+        }
+        fetchContact();
+    }
   }, []);
 
   const changeHandler = (e) => {
