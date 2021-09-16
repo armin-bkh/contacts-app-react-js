@@ -6,6 +6,8 @@ import ContactMember from "../Components/Contact/Contact";
 import getAllContacts from "../Services/getAllContacts";
 import postContact from "../Services/postContact";
 import deleteContact from "../Services/deleteContact";
+import putContact from "../Services/putContact";
+import EditContactForm from "../Components/EditContactForm/EditContactForm";
 
 const App = ({ history }) => {
   const [contacts, setContacts] = useState([]);
@@ -44,13 +46,28 @@ const App = ({ history }) => {
     } catch (err) {}
   };
 
+  const editContactHandler = async (value) => {
+    try {
+      await putContact(value.id, value);
+      const { data } = await getAllContacts();
+      setContacts(data);
+      history.push("/");
+    } catch (error) {}
+  };
+
   return (
-        <main
-          className={
-            "relative w-full h-screen overflow-y-auto mx-auto bg-gray-900 py-2 px-5"
-          }
-        >
-    <Switch>
+    <main
+      className={
+        "relative w-full h-screen overflow-y-auto mx-auto bg-gray-900 py-2 px-5"
+      }
+    >
+      <Switch>
+        <Route
+          path="/edit-contact"
+          render={(props) => (
+            <EditContactForm onSubmit={editContactHandler} {...props} />
+          )}
+        />
         <Route
           path="/add-contact"
           render={(props) => (
