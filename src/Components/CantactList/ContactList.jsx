@@ -2,7 +2,7 @@ import Contact from "./Contact/Contact";
 import { Link } from "react-router-dom";
 import { BiPlus } from "react-icons/bi";
 
-const ContactList = ({ onDelete, contacts, onSelect }) => {
+const ContactList = ({ onDelete, contacts }) => {
   return (
     <section className={`relative min-h-full py-5 overflow-y-auto`}>
       <h1 className={`text-3xl mb-5 text-yellow-400 font-bold`}>Contact's</h1>
@@ -12,7 +12,6 @@ const ContactList = ({ onDelete, contacts, onSelect }) => {
               <Contact
                 key={contact.id}
                 contact={contact}
-                onSelect={() => onSelect(contact.id)}
                 onDelete={() => onDelete(contact.id)}
               />
             ))

@@ -2,15 +2,14 @@ import contactImage from "../../../images/contact.png";
 import { BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
-const Contact = ({ onDelete, contact, onSelect }) => {
+const Contact = ({ onDelete, contact }) => {
   return (
     <li
       className={`flex justify-between items-center border-b border-gray-500 py-2`}
     >
       <Link
-        onClick={onSelect}
         to={{pathname: `/contact-${contact.id}`, state: { contact }}}
-        className={`flex items-center`}
+        className={`flex items-center flex-grow`}
       >
         <img
           className={`w-10 h-10 mr-3`}

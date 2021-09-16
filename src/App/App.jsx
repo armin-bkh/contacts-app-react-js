@@ -7,7 +7,6 @@ import { BiPlus } from "react-icons/bi";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
-  const [contactId, setContactId] = useState(null);
 
   useEffect(() => {
     const savedContacts = JSON.parse(localStorage.getItem("contacts"));
@@ -33,10 +32,6 @@ const App = () => {
     setContacts(filteredContacts);
   };
 
-  const selectContactHandler = (id) => {
-    setContactId(id);
-  };
-
   return (
     <main
       className={
@@ -52,14 +47,13 @@ const App = () => {
         />
         <Route
           path="/contact-:ID"
-          render={(props) => <ContactMember {...props} />}
+          render={(props) => <ContactMember onDelete={removeContactHandler} {...props} />}
         />
         <Route
           path="/"
           exact
           render={(props) => (
             <ContactList
-              onSelect={selectContactHandler}
               onDelete={removeContactHandler}
               contacts={contacts}
               {...props}
