@@ -4,7 +4,7 @@ import { BiPlus } from "react-icons/bi";
 
 const ContactList = ({ onDelete, contacts, onSelect }) => {
   return (
-    <section className={`relative min-h-full py-5 overflow-y-scroll`}>
+    <section className={`relative min-h-full py-5 overflow-y-auto`}>
       <h1 className={`text-3xl mb-5 text-yellow-400 font-bold`}>Contact's</h1>
       <ul className={contacts && "border-t border-gray-500"}>
         {contacts
@@ -20,7 +20,7 @@ const ContactList = ({ onDelete, contacts, onSelect }) => {
       </ul>
       <Link
         to="/add-contact"
-        className={`text-xl rounded-full absolute bottom-5 right-5 bg-yellow-400 p-3 text-gray-800`}
+        className={`text-xl rounded-full fixed bottom-5 right-10 bg-yellow-400 p-3 text-gray-800`}
       >
         <BiPlus />
       </Link>

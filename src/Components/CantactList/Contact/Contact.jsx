@@ -9,7 +9,7 @@ const Contact = ({ onDelete, contact, onSelect }) => {
     >
       <Link
         onClick={onSelect}
-        to={`/contact-${contact.id}`}
+        to={{pathname: `/contact-${contact.id}`, state: { contact }}}
         className={`flex items-center`}
       >
         <img

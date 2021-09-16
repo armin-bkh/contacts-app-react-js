@@ -33,7 +33,7 @@ const AddContactForm = ({ onSubmit, history }) => {
   };
 
   return (
-    <form className={`w-full`} onSubmit={sumbitHandler}>
+    <form className={`w-full h-full flex flex-col`} onSubmit={sumbitHandler}>
       <h1 className={`text-3xl mb-6 font-bold text-yellow-400`}>Add Contact</h1>
       <AddContactInput
         type="text"
@@ -55,7 +55,7 @@ const AddContactForm = ({ onSubmit, history }) => {
       />
       {error ? <h6 className={`text-red-600`}>{error}</h6> : null}
       <button
-        className={`text-gray-700 font-bold block mt-2 w-full py-2 px-5 rounded-md bg-yellow-400`}
+        className={`mt-auto text-gray-700 font-bold block w-full mb-10 py-2 px-5 rounded-md bg-yellow-400`}
       >
         Add
       </button>
