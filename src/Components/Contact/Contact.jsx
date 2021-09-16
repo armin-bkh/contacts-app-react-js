@@ -2,20 +2,34 @@ import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Contact from "../../images/contact.png";
 import { BiArrowBack } from 'react-icons/bi';
+import getContact from '../../Services/getContact';
 
-const ContactMember = ({ location, history, onDelete }) => {
+const ContactMember = ({ location, history, match, onDelete }) => {
   const [contactDetail, setContactDetail] = useState(null);
+  const contactId = match.params.ID;
 
   useEffect(()=>{
       if(location.state){
         const { contact } = location.state;
         setContactDetail(contact);
-      } else history.push("/")
+        return;
+      } if (contactId){
+        const fetchContact = async () =>{
+          try {
+            const { data } = await getContact(contactId);
+            console.log(data);
+            setContactDetail(data);
+          } catch (error) {
+            history.push('/')
+          }
+        }
+        fetchContact();
+      }
   }, [])
 
   return (
     <figure className={`flex flex-col max-w-sm md:max-w-lg mx-auto h-full`}>
-        <Link to="/" className={`text-4xl text-yellow-400`}><BiArrowBack /></Link>
+        <Link to="/" className={`text-4xl text-yellow-400 w-4`}><BiArrowBack /></Link>
       {contactDetail ? (
         <>
           <img className={`w-full lg:max-w-md block mx-auto`} src={Contact} alt={contactDetail.name} />
