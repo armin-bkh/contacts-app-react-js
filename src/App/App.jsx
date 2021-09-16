@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import AddContactForm from "../Components/AddContactForm/AddContactForm";
 import ContactList from "../Components/CantactList/ContactList";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
+import ContactMember from "../Components/Contact/Contact";
+import { BiTrash } from "react-icons/bi";
 
 const App = () => {
   const [contacts, setContacts] = useState([]);
+  const [contactId, setContactId] = useState(null)
 
   useEffect(() => {
     const savedContacts = JSON.parse(localStorage.getItem("contacts"));
@@ -30,8 +33,12 @@ const App = () => {
     setContacts(filteredContacts);
   };
 
+  const selectContactHandler = (id) => {
+    setContactId(id);
+  };
+
   return (
-    <main className={"max-w-sm mx-auto bg-gray-900 py-2 px-5"}>
+    <main className={"relative w-full h-screen mx-auto bg-gray-900 py-2 px-5"}>
       <Switch>
         <Route
           path="/add-contact"
@@ -44,12 +51,14 @@ const App = () => {
           exact
           render={(props) => (
             <ContactList
+              onSelect={selectContactHandler}
               onDelete={removeContactHandler}
               contacts={contacts}
               {...props}
             />
           )}
         />
+        <Route path="/contact-:ID" render={(props) => <ContactMember contactId={contactId} {...props} />} />
       </Switch>
     </main>
   );
