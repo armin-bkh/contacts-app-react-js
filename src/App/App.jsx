@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import AddContactForm from "../Components/AddContactForm/AddContactForm";
 import ContactList from "../Components/CantactList/ContactList";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import ContactMember from "../Components/Contact/Contact";
 import { BiPlus } from "react-icons/bi";
 
-const App = () => {
+const App = ({ history }) => {
   const [contacts, setContacts] = useState([]);
-
   useEffect(() => {
     const savedContacts = JSON.parse(localStorage.getItem("contacts"));
-    if (savedContacts) setContacts(savedContacts);
+    setContacts(savedContacts);
   }, []);
 
   useEffect(() => {
     localStorage.setItem("contacts", JSON.stringify(contacts));
+    if(!contacts.length) history.push("/add-contact")
   }, [contacts]);
 
   const addContactHandler = (value) => {
@@ -65,4 +65,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withRouter(App);
