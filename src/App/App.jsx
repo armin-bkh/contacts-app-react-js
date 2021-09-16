@@ -1,10 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddContactForm from '../Components/AddContactForm/AddContactForm';
 import ContactList from '../Components/CantactList/ContactList';
 
 const  App = () => {
   const [contacts, setContacts] = useState([]);
   const [errorMes, setErrorMes] = useState('');
+
+  useEffect(()=>{
+    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if(savedContacts) setContacts(savedContacts)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const addContactHandler = (value) =>{
       if(value.name || value.email){
