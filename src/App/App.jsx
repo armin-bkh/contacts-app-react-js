@@ -3,33 +3,42 @@ import AddContactForm from "../Components/AddContactForm/AddContactForm";
 import ContactList from "../Components/CantactList/ContactList";
 import { Switch, Route, withRouter } from "react-router-dom";
 import ContactMember from "../Components/Contact/Contact";
-import { BiPlus } from "react-icons/bi";
+import getAllContacts from "../Services/getAllContacts";
+import postContact from "../Services/postContact";
+import deleteContact from "../Services/deleteContact";
 
 const App = ({ history }) => {
   const [contacts, setContacts] = useState([]);
+
   useEffect(() => {
-    const savedContacts = JSON.parse(localStorage.getItem("contacts"));
-    setContacts(savedContacts);
+    // const savedContacts = JSON.parse(localStorage.getItem("contacts"));
+    const getContacts = async () =>{
+      const { data } = await getAllContacts();
+      if(!data.length) {
+        history.push("/add-contact");
+        return;
+      }
+      setContacts(data);
+    }
+    getContacts();
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-    if(!contacts.length) history.push("/add-contact")
+    // localStorage.setItem("contacts", JSON.stringify(contacts));
+    // if(!contacts.length) history.push("/add-contact")
   }, [contacts]);
 
-  const addContactHandler = (value) => {
-    setContacts([
-      ...contacts,
-      {
-        id: contacts.length + 1,
-        ...value,
-      },
-    ]);
+  const addContactHandler = async (value) => {
+    await postContact(value);
+    const { data } = await getAllContacts();
+    setContacts(data);
   };
 
-  const removeContactHandler = (id) => {
-    const filteredContacts = contacts.filter((contact) => contact.id !== id);
-    setContacts(filteredContacts);
+  const removeContactHandler = async (id) =>{
+    await deleteContact(id);
+    const { data } = await getAllContacts();
+    setContacts(data);
+    if(!data.length) history.push("/add-contact");    
   };
 
   return (
