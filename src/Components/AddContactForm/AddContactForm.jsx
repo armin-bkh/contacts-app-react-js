@@ -1,32 +1,40 @@
 import { useState } from "react";
 import AddContactInput from "../Common/AddContactInput";
 
-const AddContactForm = ({ onSubmit, errorMes, setErrorMes }) => {
+const AddContactForm = ({ onSubmit, history }) => {
   const [contact, setContact] = useState({
     name: "",
     email: "",
   });
+  const [error, setError] = useState('');
 
   const changeHandler = (e) => {
-    setErrorMes("");
+    setError("");
     setContact({
       ...contact,
       [e.target.name]: e.target.value,
     });
   };
 
-  const sumbitHandler = (e) =>{
-      e.preventDefault();
-    onSubmit(contact);
-    setContact({
-        name: '',
-        email: '',
-    })
-  }
+  const sumbitHandler = (e) => {
+    e.preventDefault();
+    if (contact.name || contact.email) {
+      if (contact.name) {
+        if (contact.email) {
+          onSubmit(contact);
+          setContact({
+            name: "",
+            email: "",
+          });
+          history.push("/");
+        } else setError("contact email is necessary");
+      } else setError("contact name is necessary");
+    } else setError("contact name and contact email in necessary");
+  };
 
   return (
     <form className={`w-full`} onSubmit={sumbitHandler}>
-      <h1 className={`text-3xl mb-6 font-bold`}>Add Contact</h1>
+      <h1 className={`text-3xl mb-6 font-bold text-yellow-400`}>Add Contact</h1>
       <AddContactInput
         type="text"
         placeholder="Name"
@@ -45,9 +53,9 @@ const AddContactForm = ({ onSubmit, errorMes, setErrorMes }) => {
         value={contact.email}
         onChange={changeHandler}
       />
-      {errorMes ? <h6 className={`text-red-600`}>{errorMes}</h6> : null}
+      {error ? <h6 className={`text-red-600`}>{error}</h6> : null}
       <button
-        className={`text-white font-bold block mt-2 w-full py-2 px-5 rounded-md bg-blue-500`}
+        className={`text-gray-700 font-bold block mt-2 w-full py-2 px-5 rounded-md bg-yellow-400`}
       >
         Add
       </button>

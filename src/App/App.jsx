@@ -1,47 +1,58 @@
-import { useEffect, useState } from 'react';
-import AddContactForm from '../Components/AddContactForm/AddContactForm';
-import ContactList from '../Components/CantactList/ContactList';
+import { useEffect, useState } from "react";
+import AddContactForm from "../Components/AddContactForm/AddContactForm";
+import ContactList from "../Components/CantactList/ContactList";
+import { Switch, Route } from "react-router-dom";
 
-const  App = () => {
+const App = () => {
   const [contacts, setContacts] = useState([]);
-  const [errorMes, setErrorMes] = useState('');
-
-  useEffect(()=>{
-    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if(savedContacts) setContacts(savedContacts)
-  }, [])
 
   useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
+    const savedContacts = JSON.parse(localStorage.getItem("contacts"));
+    if (savedContacts) setContacts(savedContacts);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts]);
 
-  const addContactHandler = (value) =>{
-      if(value.name || value.email){
-        if(value.name){
-          if(value.email){
-            setContacts([
-              ...contacts,
-              {
-                id: contacts.length + 1,
-                ...value,
-              },
-            ]) 
-          } else setErrorMes('contact email is necessary');
-        } else setErrorMes('contact name is necessary');
-      } else setErrorMes('contact name and contact email in necessary');
-  }
+  const addContactHandler = (value) => {
+    setContacts([
+      ...contacts,
+      {
+        id: contacts.length + 1,
+        ...value,
+      },
+    ]);
+  };
 
-  const removeContactHandler = (id) =>{
-    const filteredContacts = contacts.filter(contact => contact.id !== id);
+  const removeContactHandler = (id) => {
+    const filteredContacts = contacts.filter((contact) => contact.id !== id);
     setContacts(filteredContacts);
-  }
+  };
 
   return (
-    <div className={'w-4/5 mx-auto'}>
-      <AddContactForm setErrorMes={setErrorMes} errorMes={errorMes} onSubmit={addContactHandler} />
-      <ContactList onDelete={removeContactHandler} contacts={contacts} />
-    </div>
+    <main className={"max-w-sm mx-auto bg-gray-900 py-2 px-5"}>
+      <Switch>
+        <Route
+          path="/add-contact"
+          render={(props) => (
+            <AddContactForm onSubmit={addContactHandler} {...props} />
+          )}
+        />
+        <Route
+          path="/"
+          exact
+          render={(props) => (
+            <ContactList
+              onDelete={removeContactHandler}
+              contacts={contacts}
+              {...props}
+            />
+          )}
+        />
+      </Switch>
+    </main>
   );
-}
+};
 
 export default App;
