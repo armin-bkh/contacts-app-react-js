@@ -1,14 +1,9 @@
 {
   "contacts": [
     {
-      "name": "Armin Bakhshi",
-      "email": "arminbkh0921@gmail.com",
+      "name": "Armin",
+      "email": "arminbkh0921@yahoo.com",
       "id": 1
-    },
-    {
-      "name": "Alireza ",
-      "email": "alirezabakhshi75@yahoo.com",
-      "id": 2
     }
   ]
 }
