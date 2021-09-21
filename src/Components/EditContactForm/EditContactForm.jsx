@@ -69,7 +69,7 @@ const EditContactForm = ({match, history }) => {
         onChange={changeHandler}
       />
       {error ? <h1 className={`text-red-600`}>{error}</h1> : null}
-      <button className={`mt-auto text-gray-700 font-bold block w-full mb-10 py-2 px-5 rounded-md bg-yellow-400`} type="submit">Submit</button>
+      <button className={`mt-auto text-gray-700 font-bold block w-full mb-5 lg:mb-10 py-2 px-5 rounded-md bg-yellow-400`} type="submit">Submit</button>
     </form>
   ) : (
     <h2 className={`text-yellow-400 text-3xl font-bold`}>Loading...</h2>

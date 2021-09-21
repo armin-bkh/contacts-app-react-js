@@ -22,16 +22,15 @@ const ContactList = ({ history }) => {
     getContacts();
   }, []);
 
-
-  const removeContactHandler = async (id) => {
-    try {
-      await deleteContact(id);
-      const filteredContacts = contacts.filter((ct) => ct.id !== id);
-      setContacts(filteredContacts);
-      setContactList(filteredContacts);
-      if (!filteredContacts.length) history.push("/add-contact");
-    } catch (err) {}
-  };
+  // const removeContactHandler = async (id) => {
+  //   try {
+  //     await deleteContact(id);
+  //     const filteredContacts = contacts.filter((ct) => ct.id !== id);
+  //     setContacts(filteredContacts);
+  //     setContactList(filteredContacts);
+  //     if (!filteredContacts.length) history.push("/add-contact");
+  //   } catch (err) {}
+  // };
 
   const searchContactsHandler = (e) => {
     setSearch(e.target.value);
@@ -45,13 +44,13 @@ const ContactList = ({ history }) => {
 
   return (
     <section className={`relative min-h-full py-5 overflow-y-auto`}>
-      <header className={`flex  mb-5 items-center justify-between`}>
-      <h1 className={`text-3xl text-yellow-400 font-bold`}>Contact's</h1>
+      <header className={`flex flex-col md:flex-row mb-5 md:items-center md:justify-between`}>
+      <h1 className={`mb-5 md:mb-0 text-3xl text-yellow-400 font-bold`}>Contact's</h1>
       <div className={`relative`}>
-        <input className={`border border-yellow-400 px-7 py-2 bg-transparent placeholder-gray-500
+        <input className={`border w-full border-yellow-400 px-6 py-1 md:px-7 md:py-2 bg-transparent placeholder-gray-500
          outline-none text-gray-300 rounded-full`} 
         placeholder="search..." type="text" value={search} onChange={searchContactsHandler} />
-        <BiSearch className={`absolute right-2 text-xl bottom-3 text-yellow-400`} />
+        <BiSearch className={`absolute right-2 text-base md:text-xl bottom-2 md:bottom-3 text-yellow-400`} />
       </div>
       </header>
       <ul className={contacts && "border-t border-gray-500"}>
@@ -60,7 +59,6 @@ const ContactList = ({ history }) => {
             <Contact
               key={contact.id}
               contact={contact}
-              onDelete={() => removeContactHandler(contact.id)}
             />
           ))
         ) : (
@@ -69,7 +67,7 @@ const ContactList = ({ history }) => {
       </ul>
       <Link
         to="/add-contact"
-        className={`text-xl rounded-full fixed bottom-5 right-10 bg-yellow-400 p-3 text-gray-800`}
+        className={`text-base md:text-xl rounded-full fixed bottom-5 right-10 bg-yellow-400 p-2 md:p-3 text-gray-800`}
       >
         <BiPlus />
       </Link>

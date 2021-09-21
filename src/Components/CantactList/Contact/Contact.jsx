@@ -1,8 +1,7 @@
 import contactImage from "../../../images/contact.png";
-import { BiTrash } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
-const Contact = ({ onDelete, contact }) => {
+const Contact = ({ contact }) => {
   return (
     <li
       className={`flex justify-between items-center border-b border-gray-500 py-2`}
@@ -17,18 +16,12 @@ const Contact = ({ onDelete, contact }) => {
           alt={contact.name}
         />
         <div className={`flex flex-col`}>
-          <span className={`font-bold text-gray-100`}>{contact.name}</span>
-          <span className={`font-medium text-gray-400 text-sm`}>
+          <span className={`font-bold text-sm text-gray-100`}>{contact.name}</span>
+          <span className={`font-medium text-gray-400 text-xs md:text-sm`}>
             {contact.email}
           </span>
         </div>
       </Link>
-      <button
-        className={`text-black bg-yellow-400 px-4 py-2 rounded-md text-xl`}
-        onClick={onDelete}
-      >
-        <BiTrash />
-      </button>
     </li>
   );
 };
