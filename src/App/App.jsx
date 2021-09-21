@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AddContactForm from "../Components/AddContactForm/AddContactForm";
 import ContactList from "../Components/CantactList/ContactList";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import ContactMember from "../Components/Contact/Contact";
 import getAllContacts from "../Services/getAllContacts";
 import postContact from "../Services/postContact";
@@ -9,51 +9,35 @@ import deleteContact from "../Services/deleteContact";
 import putContact from "../Services/putContact";
 import EditContactForm from "../Components/EditContactForm/EditContactForm";
 
-const App = ({ history }) => {
-  const [contacts, setContacts] = useState([]);
+const App = () => {
+  // const [contacts, setContacts] = useState([]);
 
-  useEffect(() => {
-    // const savedContacts = JSON.parse(localStorage.getItem("contacts"));
-    const getContacts = async () => {
-      const { data } = await getAllContacts();
-      if (!data.length) {
-        history.push("/add-contact");
-        return;
-      }
-      setContacts(data);
-    };
-    getContacts();
-  }, []);
+  // useEffect(() => {
+  //   const savedContacts = JSON.parse(localStorage.getItem("contacts"));
+  //   const getContacts = async () => {
+  //     const { data } = await getAllContacts();
+  //     if (!data.length) {
+  //       history.push("/add-contact");
+  //       return;
+  //     }
+  //     setContacts(data);
+  //   };
+  //   getContacts();
+  // }, []);
 
-  useEffect(() => {
-    // localStorage.setItem("contacts", JSON.stringify(contacts));
-    // if(!contacts.length) history.push("/add-contact")
-  }, [contacts]);
+  // useEffect(() => {
+  //   localStorage.setItem("contacts", JSON.stringify(contacts));
+  //   if(!contacts.length) history.push("/add-contact")
+  // }, [contacts]);
 
-  const addContactHandler = async (value) => {
-    try {
-      const { data } = await postContact(value);
-      setContacts([...contacts, data]);
-    } catch (err) {}
-  };
-
-  const removeContactHandler = async (id) => {
-    try {
-      await deleteContact(id);
-      const filteredcontacts = contacts.filter((pr) => pr.id !== id);
-      setContacts(filteredcontacts);
-      if (!filteredcontacts.length) history.push("/add-contact");
-    } catch (err) {}
-  };
-
-  const editContactHandler = async (value) => {
-    try {
-      await putContact(value.id, value);
-      const { data } = await getAllContacts();
-      setContacts(data);
-      history.push("/");
-    } catch (error) {}
-  };
+  // const editContactHandler = async (value, id) => {
+  //   try {
+  //     await putContact(id, value);
+  //     const { data } = await getAllContacts();
+  //     setContacts(data);
+  //     history.push("/");
+  //   } catch (error) {}
+  // };
 
   return (
     <main
@@ -64,36 +48,24 @@ const App = ({ history }) => {
       <Switch>
         <Route
           path="/edit-contact-:ID"
-          render={(props) => (
-            <EditContactForm onSubmit={editContactHandler} {...props} />
-          )}
+          component={EditContactForm}
         />
         <Route
           path="/add-contact"
-          render={(props) => (
-            <AddContactForm onSubmit={addContactHandler} {...props} />
-          )}
+          component={AddContactForm}
         />
         <Route
           path="/contact-:ID"
-          render={(props) => (
-            <ContactMember onDelete={removeContactHandler} {...props} />
-          )}
+          component={ContactMember}
         />
         <Route
           path="/"
           exact
-          render={(props) => (
-            <ContactList
-              onDelete={removeContactHandler}
-              contacts={contacts}
-              {...props}
-            />
-          )}
+          component={ContactList}
         />
       </Switch>
     </main>
   );
 };
 
-export default withRouter(App);
+export default App;

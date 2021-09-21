@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import getContact from "../../Services/getContact";
+import putContact from "../../Services/putContact";
 import AddContactInput from "../Common/AddContactInput";
 
-const EditContactForm = ({match, history, onSubmit }) => {
+const EditContactForm = ({match, history }) => {
   const [contact, setContact] = useState({
       name: "",
       email: "",
@@ -17,7 +18,7 @@ const EditContactForm = ({match, history, onSubmit }) => {
             const { data } = await getContact(match.params.ID)
             setContact(data);
         } catch (error) {
-        history.push("/")
+          history.push("/")
         }
         }
         fetchContact();
@@ -32,17 +33,15 @@ const EditContactForm = ({match, history, onSubmit }) => {
     });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (contact.name || contact.email) {
       if (contact.name) {
         if (contact.email) {
-            onSubmit(contact);
-            setContact({
-                name: '',
-                email: '',
-                id: '',
-            })
+          try{
+            await putContact(match.params.ID, contact);
+            history.push('/');
+          } catch(err) {}
         } else setError("contact email is necessary");
     } else setError("contact name is necessary");
   } else setError("contact name and contact email in necessary");

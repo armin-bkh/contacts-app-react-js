@@ -1,7 +1,8 @@
 import { useState } from "react";
+import postContact from "../../Services/postContact";
 import AddContactInput from "../Common/AddContactInput";
 
-const AddContactForm = ({ onSubmit, history }) => {
+const AddContactForm = ({ history }) => {
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -16,17 +17,15 @@ const AddContactForm = ({ onSubmit, history }) => {
     });
   };
 
-  const sumbitHandler = (e) => {
+  const sumbitHandler = async (e) => {
     e.preventDefault();
     if (contact.name || contact.email) {
       if (contact.name) {
         if (contact.email) {
-          onSubmit(contact);
-          setContact({
-            name: "",
-            email: "",
-          });
-          history.push("/");
+          try{
+            await postContact(contact);
+            history.push("/");
+          } catch(err) {}
         } else setError("contact email is necessary");
       } else setError("contact name is necessary");
     } else setError("contact name and contact email in necessary");

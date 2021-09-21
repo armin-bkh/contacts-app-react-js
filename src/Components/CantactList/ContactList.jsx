@@ -1,8 +1,33 @@
 import Contact from "./Contact/Contact";
 import { Link } from "react-router-dom";
 import { BiPlus } from "react-icons/bi";
+import { useEffect, useState } from "react";
+import getAllContacts from '../../Services/getAllContacts';
+import deleteContact from '../../Services/deleteContact';
 
-const ContactList = ({ onDelete, contacts }) => {
+const ContactList = ({ history }) => {
+  const [contacts, setContacts] = useState(null);
+
+  useEffect(()=>{
+    const getContacts = async () =>{
+      try{
+        const { data } = await getAllContacts();
+        setContacts(data);
+        if(!data.length) history.push("/add-contact")
+      } catch(err) {}
+    }
+    getContacts();
+  }, [])
+
+  const removeContactHandler = async (id) => {
+    try{
+      await deleteContact(id);
+      const filteredContacts = contacts.filter(ct => ct.id !== id);
+      setContacts(filteredContacts);
+      if(!filteredContacts.length) history.push("/add-contact")
+    } catch(err) {}
+  }
+
   return (
     <section className={`relative min-h-full py-5 overflow-y-auto`}>
       <h1 className={`text-3xl mb-5 text-yellow-400 font-bold`}>Contact's</h1>
@@ -12,10 +37,10 @@ const ContactList = ({ onDelete, contacts }) => {
               <Contact
                 key={contact.id}
                 contact={contact}
-                onDelete={() => onDelete(contact.id)}
+                onDelete={() => removeContactHandler(contact.id)}
               />
             ))
-          : null}
+          : <h1 className={`text-yellow-400 text-5xl text-center`}>Loading...</h1>}
       </ul>
       <Link
         to="/add-contact"

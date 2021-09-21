@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import Contact from "../../images/contact.png";
 import { BiArrowBack, BiPencil } from "react-icons/bi";
 import getContact from "../../Services/getContact";
+import deleteContact from '../../Services/deleteContact';
 
-const ContactMember = ({ location, history, match, onDelete }) => {
+const ContactMember = ({ location, history, match }) => {
   const [contactDetail, setContactDetail] = useState(null);
   const contactId = match.params.ID;
 
@@ -18,15 +19,19 @@ const ContactMember = ({ location, history, match, onDelete }) => {
       const fetchContact = async () => {
         try {
           const { data } = await getContact(contactId);
-          console.log(data);
           setContactDetail(data);
-        } catch (error) {
-          history.push("/");
-        }
+        } catch (error) {}
       };
       fetchContact();
     }
   }, []);
+
+  const removeContactHandler = async () =>{
+    try{
+      await deleteContact(match.params.ID);
+      history.push('/')
+    } catch(err) {}
+  }
 
   return (
     <figure className={`flex flex-col max-w-sm md:max-w-lg mx-auto h-full`}>
@@ -53,14 +58,14 @@ const ContactMember = ({ location, history, match, onDelete }) => {
             className={`text-yellow-400 text-2xl px-4 py-2 border border-yellow-400 transition rounded-md hover:text-gray-800 hover:bg-yellow-400`}
             ><BiPencil /></Link>
           </div>
-          <Link
-            onClick={() => onDelete(contactDetail.id)}
+          <button
+            onClick={removeContactHandler}
             className={`text-red-900 text-xl block w-full py-2 text-center mt-auto mb-10
            border-red-900 border rounded-md hover:bg-red-900 hover:text-gray-900 font-bold transition`}
-            to="/"
+            
           >
             Remove contact
-          </Link>
+          </button>
         </>
       ) : (
         <h1 className={`text-5xl text-yellow-400 fot-fold text-center`}>
