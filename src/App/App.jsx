@@ -11,11 +11,13 @@ import EditContactForm from "../Components/EditContactForm/EditContactForm";
 
 const App = ({ history }) => {
   const [contacts, setContacts] = useState([]);
+  const [contactList, setContactList] = useState([]);
 
   useEffect(() => {
     const savedContacts = JSON.parse(localStorage.getItem("contacts"));
     setContacts(savedContacts);
-    if(!savedContacts.length) history.push('/add-contact')
+    setContactList(savedContacts);
+    if (!savedContacts.length) history.push("/add-contact");
     // const getContacts = async () => {
     //   const { data } = await getAllContacts();
     //   if (!data.length) {
@@ -30,31 +32,44 @@ const App = ({ history }) => {
   useEffect(() => {
     localStorage.setItem("contacts", JSON.stringify(contacts));
     // if(!contacts.length) history.push("/add-contact")
+    setContactList(contacts);
   }, [contacts]);
 
-  const addContactHandler = (contact) =>{
-    setContacts([
-      ...contacts,
-      {...contact, id: contacts.length + 1}
-    ])
-  }
+  const addContactHandler = (contact) => {
+    setContacts([...contacts, { ...contact, id: contacts.length + 1 }]);
+  };
 
   const editContactHandler = (id, contact) => {
-    const index = contacts.findIndex(ct => ct.id === id);
+    const index = contacts.findIndex((ct) => ct.id === id);
     const cloneContacts = [...contacts];
-    cloneContacts[index] = contact; 
+    cloneContacts[index] = contact;
     setContacts(cloneContacts);
   };
 
-  const removeContactHandler = (id) =>{
-    const filteredContacts = contacts.filter(ct => ct.id !== id);
+  const removeContactHandler = (id) => {
+    const filteredContacts = contacts.filter((ct) => ct.id !== id);
     setContacts(filteredContacts);
-    if(!filteredContacts.length) {
-      history.push('/add-contact')
+    if (!filteredContacts.length) {
+      history.push("/add-contact");
       return;
     }
-    history.push('/')
-  }
+    history.push("/");
+  };
+
+  const searchContactsHandler = (search) => {
+    if (!search) {
+      setContactList(contacts);
+      return;
+    }
+    // const searchedContact = contacts.filter(ct => Object.values(ct).join(" ").toLowerCase().includes(search.toLowerCase()));
+    const searchedContact = contacts.filter((ct) =>
+      String.prototype
+        .concat(ct.name, " ", ct.email)
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
+    setContactList(searchedContact);
+  };
 
   // const editContactHandler = async (value, id) => {
   //   try {
@@ -74,20 +89,32 @@ const App = ({ history }) => {
       <Switch>
         <Route
           path="/edit-contact-:ID"
-          render={(props)=> <EditContactForm onEdit={editContactHandler} {...props} />}
+          render={(props) => (
+            <EditContactForm onEdit={editContactHandler} {...props} />
+          )}
         />
         <Route
           path="/add-contact"
-          render={(props)=> <AddContactForm onAdd={addContactHandler} {...props} />}
+          render={(props) => (
+            <AddContactForm onAdd={addContactHandler} {...props} />
+          )}
         />
         <Route
           path="/contact-:ID"
-          render={(props)=> <ContactMember onDelete={removeContactHandler} {...props} />}
+          render={(props) => (
+            <ContactMember onDelete={removeContactHandler} {...props} />
+          )}
         />
         <Route
           path="/"
           exact
-          render={(props)=> <ContactList contacts={contacts} onDelete={removeContactHandler} {...props} />}
+          render={(props) => (
+            <ContactList
+              contactList={contactList}
+              onSearch={searchContactsHandler}
+              {...props}
+            />
+          )}
         />
       </Switch>
     </main>
