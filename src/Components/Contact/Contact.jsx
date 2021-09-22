@@ -5,7 +5,7 @@ import { BiArrowBack, BiPencil } from "react-icons/bi";
 import getContact from "../../Services/getContact";
 import deleteContact from '../../Services/deleteContact';
 
-const ContactMember = ({ location, history, match }) => {
+const ContactMember = ({ location , onDelete, match, history }) => {
   const [contactDetail, setContactDetail] = useState(null);
   const contactId = match.params.ID;
 
@@ -16,24 +16,34 @@ const ContactMember = ({ location, history, match }) => {
       return;
     }
     if (contactId) {
-      const fetchContact = async () => {
-        try {
-          const { data } = await getContact(contactId);
-          setContactDetail(data);
-        } catch (error) {
-          history.push("/")
-        }
-      };
-      fetchContact();
+    //   const fetchContact = async () => {
+    //     try {
+    //       const { data } = await getContact(contactId);
+    //       setContactDetail(data);
+    //     } catch (error) {
+    //       history.push("/")
+    //     }
+    //   };
+    //   fetchContact();
+    const savedContacts = JSON.parse(localStorage.getItem("contacts"));
+    const index = savedContacts.findIndex(
+      (ct) => ct.id === Number(match.params.ID)
+    );
+    if (index === -1) {
+      history.push("/");
+      return;
+    }
+    const selectedContact = { ...savedContacts[index] };
+    setContactDetail(selectedContact);
       }
   }, []);
 
-  const removeContactHandler = async () =>{
-    try{
-      await deleteContact(match.params.ID);
-      history.push('/')
-    } catch(err) {}
-  }
+  // const removeContactHandler = async () =>{
+  //   try{
+  //     await deleteContact(match.params.ID);
+  //     history.push('/')
+  //   } catch(err) {}
+  // }
 
   return (
     <figure className={`flex flex-col max-w-sm md:max-w-lg mx-auto h-full`}>
@@ -61,7 +71,7 @@ const ContactMember = ({ location, history, match }) => {
             ><BiPencil /></Link>
           </div>
           <button
-            onClick={removeContactHandler}
+            onClick={() => onDelete(contactDetail.id)}
             className={`text-red-900 text-base md:text-xl block w-full py-1 md:py-2 text-center mt-auto mb-0 lg:mb-10
            border-red-900 border rounded-md hover:bg-red-900 hover:text-gray-900 font-bold transition`}
             

@@ -1,14 +1,3 @@
 {
-  "contacts": [
-    {
-      "name": "Mohammad",
-      "email": "mohZandi22@yahoo.com",
-      "id": 2
-    },
-    {
-      "name": "Armin",
-      "email": "arminbkh0921@gmail.com",
-      "id": 3
-    }
-  ]
+  "contacts": []
 }
