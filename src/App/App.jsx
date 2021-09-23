@@ -10,8 +10,8 @@ import putContact from "../Services/putContact";
 import EditContactForm from "../Components/EditContactForm/EditContactForm";
 
 const App = ({ history }) => {
-  const [contacts, setContacts] = useState([]);
-  const [contactList, setContactList] = useState([]);
+  const [contacts, setContacts] = useState(null);
+  const [contactList, setContactList] = useState(null);
 
   useEffect(() => {
     const savedContacts = JSON.parse(localStorage.getItem("contacts"));
